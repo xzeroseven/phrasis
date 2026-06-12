@@ -1,10 +1,12 @@
+import math
+
 from collections import Counter
 
 from phrasis.models.base import BaseModel
 
 
 class CharacterLanguageModel(BaseModel):
-    def __init__(self, n: int = 5):
+    def __init__(self, n: int = 3):
         self.n = n
         self.counts = Counter()
         self.total = 0
@@ -17,7 +19,8 @@ class CharacterLanguageModel(BaseModel):
         for text in corpus:
             padded = f"{'~' * (self.n - 1)}{text.lower()}{'~' * (self.n - 1)}"
 
-            for i in range(len(padded) - self.n + 1):
+            num_grams = len(padded) - self.n + 1
+            for i in range(num_grams):
                 gram = padded[i : i + self.n]
                 self.counts[gram] += 1
                 self.total += 1
@@ -31,10 +34,10 @@ class CharacterLanguageModel(BaseModel):
 
         padded = f"{'~' * (self.n - 1)}{text.lower()}{'~' * (self.n - 1)}"
 
-        scores = []
-        for i in range(len(padded) - self.n + 1):
+        total_log_score = 0.0
+        num_grams = len(padded) - self.n + 1
+        for i in range(num_grams):
             gram = padded[i : i + self.n]
             prob = self.model.get(gram, 1e-9)
-            scores.append(prob)
-
-        return sum(scores) / len(scores)
+            total_log_score += math.log(prob)
+        return total_log_score / num_grams
