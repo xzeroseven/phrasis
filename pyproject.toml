@@ -1,0 +1,18 @@
+[project]
+name = "phrasis"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Mansoor Ahmed Memon",email = "mansoormemon@0x07.io"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+[tool.poetry]
+packages = [{include = "phrasis", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
